@@ -161,15 +161,13 @@ export default function AddNewQuotePage() {
                 <Controller
                   name="category"
                   control={control}
-                  defaultValue={
-                    (state.data?.category as NewQuoteInput["category"]) || []
-                  }
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={(val) => field.onChange([val])}
-                      defaultValue={field.value?.[0] || ""}
-                      name={field.name}
-                    >
+                  defaultValue={state.data?.category || ""}
+        render={({ field }) => (
+          <Select
+            onValueChange={(val) => field.onChange(val)}
+            defaultValue={field.value || ""}
+            name={field.name}
+          >
                       <SelectTrigger
                         id="category"
                         className="w-full bg-base-100 border-base-content/20 focus:ring-primary"

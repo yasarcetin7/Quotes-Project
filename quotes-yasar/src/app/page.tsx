@@ -17,6 +17,7 @@ const CATEGORIES = ["All", "life", "health", "motivation", "wisdom"];
 export default function Home() {
   const router = useRouter();
   // 1. Context ve User kancalarından verileri çekiyoruz
+  
   const {
     filteredQuotes,
     activeCategory,
@@ -28,7 +29,13 @@ export default function Home() {
     handleLikeQuote,
   } = useContext(QuotesContext);
   const { user, isLoading: userLoading } = useUser();
-
+const handleTestLike = async () => {
+    console.log("Kalp butonuna TIKLANDI! Bu yazı konsola geldi.");
+    alert("Buton başarıyla çalışıyor! Tıklamayı algıladı.");
+    
+    // Eğer istersen asıl beğeni fonksiyonunu da hemen altında çalıştırabilirsin:
+    // await handleLikeQuote(); 
+  };
   // 2. Yüklenme (Loading) Durumu
   if (quotesLoading) {
     return (
@@ -176,6 +183,7 @@ export default function Home() {
             <Button
               variant={"primary"}
               onClick={handleLikeQuote}
+              className="relative z-50 text-lg cursor-pointer"
               aria-label="Like this quote"
             >
               ❤️

@@ -83,16 +83,27 @@ export function QuotesContextProvider({ children }: { children: React.ReactNode 
   }
 
   function handleLikeQuote() {
-    // Beğenilen sözü filtrelenmiş listeden buluyoruz
     const currentQuote = filteredQuotes[quoteIndex];
     if (!currentQuote) return;
 
+    // 1. Şu anki kullanıcının ID'sini alıyoruz
+    const userId = user?.sub || "guest";
+
     const updatedQuotes = quotes.map((quote) => {
-      // Index yerine ID veya söz metni ile eşleştirme yapıyoruz (Filtrelemede indexler kayacağı için)
       if (quote._id === currentQuote._id || quote.quote === currentQuote.quote) {
         const currentLikes = typeof quote.likeCount === "number" ? quote.likeCount : 0;
+        
+        // EĞER ZATEN BEĞENİLMİŞSE BEĞENİYİ GERİ AL
         if (quote.isLiked) {
-          return { ...quote, likeCount: currentLikes - 1, isLiked: false };
+          // Kullanıcının ID'sini listeden çıkarıyoruz
+          const newLikedBy = quote.likedBy ? quote.likedBy.filter((id: string) => id !== userId) : [];
+          return { ...quote, likeCount: currentLikes - 1, isLiked: false, likedBy: newLikedBy };
+        } 
+        // EĞER BEĞENİLMEMİŞSE BEĞEN
+        else {
+          // Kullanıcının ID'sini listeye ekliyoruz
+          const newLikedBy = quote.likedBy ? [...quote.likedBy, userId] : [userId];
+          return { ...quote, likeCount: currentLikes + 1, isLiked: true, likedBy: newLikedBy };
         }
       }
       return quote;
