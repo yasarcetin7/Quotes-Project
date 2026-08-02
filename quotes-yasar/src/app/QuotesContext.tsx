@@ -87,20 +87,40 @@ export function QuotesContextProvider({ children }: { children: React.ReactNode 
     const currentQuote = filteredQuotes[quoteIndex];
     if (!currentQuote) return;
 
+    // Kullanıcı ID'sini alıyoruz (Giriş yapmamışsa 'guest' kullanır)
+    const userId = user?.sub || "guest";
+
     const updatedQuotes = quotes.map((quote) => {
-      // Index yerine ID veya söz metni ile eşleştirme yapıyoruz (Filtrelemede indexler kayacağı için)
+      // Index yerine ID veya söz metni ile eşleştirme yapıyoruz
       if (quote._id === currentQuote._id || quote.quote === currentQuote.quote) {
         const currentLikes = typeof quote.likeCount === "number" ? quote.likeCount : 0;
-        if (quote.isLiked) {
-          return { ...quote, likeCount: currentLikes - 1, isLiked: false };
+        const currentLikedBy = quote.likedBy || []; // Hata vermemesi için boş dizi kalkanı
+
+        if (quote.isLiked || currentLikedBy.includes(userId)) {
+          // BEĞENİYİ KALDIR: Kullanıcıyı likedBy dizisinden filtreleyerek çıkar
+          return { 
+            ...quote, 
+            likeCount: currentLikes > 0 ? currentLikes - 1 : 0, 
+            isLiked: false,
+            likedBy: currentLikedBy.filter((id) => id !== userId)
+          };
+        } else {
+          // BEĞEN: Kullanıcıyı likedBy dizisine ekle
+          return { 
+            ...quote, 
+            likeCount: currentLikes + 1, 
+            isLiked: true,
+            likedBy: [...currentLikedBy, userId]
+          };
         }
       }
       return quote;
     });
 
+    // 🚀 EKSİK OLAN KISIM EKLENDİ (State'i ve LocalStorage'ı güncelleme)
     setQuotes(updatedQuotes);
     localStorage.setItem("mySavedQuotes", JSON.stringify(updatedQuotes));
-  }
+  } // 🚀 EKSİK KAPANMA PARANTEZİ EKLENDİ
 
   function handleUnlikeQuote(quoteIdToUnlike: number) {
     const userId = user?.sub || "guest";
@@ -108,11 +128,18 @@ export function QuotesContextProvider({ children }: { children: React.ReactNode 
     const updatedQuotes = quotes.map((quote, id) => {
       if (id === quoteIdToUnlike) {
         const currentLikes = typeof quote.likeCount === "number" ? quote.likeCount : 1;
-        return { ...quote, likeCount: currentLikes - 1, isLiked: false };
+        const currentLikedBy = quote.likedBy || [];
+
+        // BEĞENİYİ KALDIR: (Liked sayfasından tıklandığında çalışır)
+        return { 
+          ...quote, 
+          likeCount: currentLikes > 0 ? currentLikes - 1 : 0, 
+          isLiked: false,
+          likedBy: currentLikedBy.filter((uid) => uid !== userId)
+        };
       }
       return quote;
     });
-
     setQuotes(updatedQuotes);
     localStorage.setItem("mySavedQuotes", JSON.stringify(updatedQuotes));
   }

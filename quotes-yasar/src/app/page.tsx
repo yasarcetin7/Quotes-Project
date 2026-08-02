@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@/components/Button";
 import { H3 } from "@/typography/H3";
 import { QuotesContext } from "./QuotesContext";
@@ -121,13 +121,13 @@ export default function Home() {
             <>
               <a
                 href="/auth/login"
-                className="btn btn-sm btn-success text-success-content rounded-md shadow-sm border border-base-content/20"
+                className="btn btn-sm btn-success text-success-content rounded-md shadow-md p-1 gap-3 border-2 mx-1 border-base-content/20"
               >
                 Log in
               </a>
               <Link
                 href="/user/quotes/liked"
-                className="btn btn-sm btn-primary text-primary-content rounded-md shadow-sm border border-base-content/20"
+                className="btn btn-sm btn-success text-success-content rounded-md shadow-md p-1 gap-3 border-2 mx-1 border-base-content/20"
               >
                 See quotes I liked
               </Link>
@@ -139,19 +139,19 @@ export default function Home() {
             <>
               <a
                 href="/auth/logout"
-                className="btn btn-sm btn-success text-success-content rounded-md shadow-sm border border-base-content/20"
+                className="btn btn-sm btn-success text-success-content rounded-md shadow-md p-1 gap-3 border-2 mx-1 border-base-content/20"
               >
                 Log out
               </a>
               <Link
                 href="/user/quotes/new"
-                className="btn btn-sm btn-primary text-primary-content rounded-md shadow-sm border border-base-content/20"
+                className="btn btn-sm btn-primary text-primary-content rounded-md shadow-md p-1 gap-3 mx-1 border-2 border-base-content/20"
               >
                 Add Quote
               </Link>
               <Link
                 href="/user/quotes/liked"
-                className="btn btn-sm btn-primary text-primary-content rounded-md shadow-sm border border-base-content/20"
+                className="btn btn-sm btn-primary text-primary-content rounded-md shadow-md p-1 gap-3 mx-1 border-2 border-base-content/20"
               >
                 See quotes I liked
               </Link>
@@ -170,7 +170,7 @@ export default function Home() {
           <span className="absolute top-4 left-4 text-[10px] uppercase font-bold tracking-wider text-primary/70 bg-primary/10 px-2 py-1 rounded-sm">
             {currentQuote.category ? currentQuote.category.join(", ") : "General"}
           </span>
-
+          
           <div className="self-end flex items-center gap-3 mb-4 md:mb-6">
             <span className="font-bold text-error">{likeCount || 0} Like</span>
             <Button
@@ -188,19 +188,19 @@ export default function Home() {
             - {author}
           </span>
 
-          <div className="mt-4 md:mt-3 flex flex-col">
+          <div className="mt-1 md:mt-1 flex flex-col">
             <Button variant={"primary"} onClick={handleQuoteIndexUpdate}>
               Next Quote
             </Button>
             {isOwner && (
-              <div className="mt-4 md:mt-3 flex flex-col">
+              <div className="mt-1 md:mt-1 flex flex-col">
                 <Button
                   variant={"primary"}
                   onClick={() => router.push(`/user/quotes/edit/${_id}`)}
                 >
                   Edit
                 </Button>
-                <div className="mt-4 md:mt-3 flex flex-col">
+                <div className="mt-1 md:mt-1 flex flex-col">
                   <Button variant={"primary"} onClick={handleDelete}>
                     Delete
                   </Button>

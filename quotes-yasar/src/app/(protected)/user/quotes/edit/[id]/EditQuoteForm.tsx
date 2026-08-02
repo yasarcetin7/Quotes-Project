@@ -5,19 +5,37 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { updateQuote } from "./action";
 
+// 🚀 SHADCN UI IMPORTLARI (Dosya yollarını kendi projene göre kontrol et)
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; 
+
+const Categories = ["Life", "Health", "Motivation", "Wisdom"];
+
 export default function EditQuoteForm({ 
   quoteId, 
   defaultQuote, 
-  defaultAuthor 
+  defaultAuthor,
+  defaultCategory
 }: { 
   quoteId: string; 
   defaultQuote: string; 
   defaultAuthor: string;
+  defaultCategory: string | string[];
 }) {
   const updateQuoteWithId = updateQuote.bind(null, quoteId);
   
   // Hata state'ini yakalamak için React hook'u kullanıyoruz
   const [state, formAction] = useFormState(updateQuoteWithId, null);
+
+  // Eski verileri güvenli bir şekilde diziye (array) çeviriyoruz
+  const categoryArray = Array.isArray(defaultCategory) 
+    ? defaultCategory 
+    : (defaultCategory ? [defaultCategory] : []);
 
   return (
     <form
@@ -56,6 +74,29 @@ export default function EditQuoteForm({
           defaultValue={defaultQuote}
           className="textarea textarea-bordered h-28 resize-none text-base"
         />
+      </div>
+
+      {/* 🚀 SHADCN UI ILE KATEGORI SEÇIMI */}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="category" className="font-semibold">Category</label>
+        <Select 
+          name="category" 
+          defaultValue={categoryArray[0] || ""} // Veritabanındaki ilk kategoriyi seçili getirir
+        >
+          <SelectTrigger 
+            id="category" 
+            className="w-full bg-base-100 border-base-content/20 focus:ring-primary h-12"
+          >
+            <SelectValue placeholder="Select a category..." />
+          </SelectTrigger>
+          <SelectContent position="popper" className="bg-base-100 shadow-xl z-50 border border-base-content/20">
+            {Categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="mt-4 md:mt-4 flex flex-col gap-4">

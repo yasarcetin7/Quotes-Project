@@ -10,7 +10,7 @@ const mainVariants = cva(
     variants: {
       variant: {
         // İŞTE SENİN İSTEDİĞİN PRIMARY ÖZELLİĞİ:
-        primary: "bg-base-200 pt-24 pb-20 sm:pt-0 sm:pb-0",
+         primary: "bg-background text-foreground pt-24 pb-20 sm:pt-0 sm:pb-0 transition-colors duration-300",
         
         // İleride farklı bir arka plan veya padding istersen diye örnek bir secondary
         secondary: "bg-white py-10", 

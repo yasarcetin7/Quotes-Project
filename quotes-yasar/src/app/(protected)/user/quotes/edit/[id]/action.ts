@@ -4,6 +4,7 @@ import { auth0 } from "@/lib/auth0";
 import { redirect } from "next/navigation";
 import { ObjectId } from "mongodb";
 import { getDb, Collections } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 // DİKKAT: Araya 'prevState: any' parametresi eklendi
 export async function updateQuote(quoteId: string, prevState: any, formData: FormData) {
@@ -12,6 +13,7 @@ export async function updateQuote(quoteId: string, prevState: any, formData: For
 
   const updatedText = String(formData.get("quote") ?? "").trim();
   const updatedAuthor = String(formData.get("author") ?? "").trim();
+  const category = formData.getAll("category").map(String);
 
   // 1. DOĞRULAMA: Hataları ekrana (UI) gönder
   if (updatedText === "" || updatedAuthor === "") {
@@ -32,10 +34,11 @@ export async function updateQuote(quoteId: string, prevState: any, formData: For
         $set: {
           quote: updatedText,
           author: updatedAuthor,
+          category: category,
           updatedAt: new Date(),
         },
       }
     );
-
+revalidatePath("/");
   redirect("/");
 }

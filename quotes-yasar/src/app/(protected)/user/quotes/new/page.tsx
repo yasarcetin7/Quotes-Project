@@ -101,7 +101,7 @@ export default function AddNewQuotePage() {
       </Nav>
 
       <form
-        className="bg-base-100 rounded-md p-7 md:p-12 flex flex-col w-full shadow-xl border border-base-content/20 max-w-md"
+        className="w-full max-w-lg px-5 flex flex-col items-center gap-5 mt-16 sm:mt-0"
         action={dispatchAction}
       >
         <FieldGroup>
@@ -122,7 +122,7 @@ export default function AddNewQuotePage() {
                 />
                 {state.errors?.fieldErrors?.author && (
                   <FieldError errors={state.errors?.fieldErrors?.author}>
-                    {state.errors?.fieldErrors?.author}
+                    {state.errors?.fieldErrors?.author[0]}
                   </FieldError>
                 )}
                 {clientSideErrors.author && (
@@ -162,7 +162,7 @@ export default function AddNewQuotePage() {
                   name="category"
                   control={control}
                   defaultValue={
-                    (state.data?.category as NewQuoteInput["category"]) || []
+                    (state.data?.category as unknown as NewQuoteInput["category"]) || []
                   }
                   render={({ field }) => (
                     <Select
@@ -172,12 +172,12 @@ export default function AddNewQuotePage() {
                     >
                       <SelectTrigger
                         id="category"
-                        className="w-full bg-base-100 border-base-content/20 focus:ring-primary"
+                        className="w-full bg-base-200 border-base-content/20 focus:ring-primary"
                         aria-invalid={!!state.errors?.fieldErrors?.category}
                       >
                         <SelectValue placeholder="Select a category..." />
                       </SelectTrigger>
-                      <SelectContent position="popper" className="bg-base-100 shadow-xl z-50 border border-base-content/20">
+                      <SelectContent position="popper" className="bg-base-200 shadow-xl z-50 border border-base-content/20">
                         <SelectItem value="life">Life</SelectItem>
                         <SelectItem value="health">Health</SelectItem>
                         <SelectItem value="motivation">Motivation</SelectItem>
@@ -202,10 +202,10 @@ export default function AddNewQuotePage() {
             </FieldGroup>
           </FieldSet>
           <Field orientation="horizontal">
-            <Button variant="primary" type="submit">
+            <Button variant="secondary" type="submit">
               Create
             </Button>
-            <Button variant="primary" type="reset">
+            <Button variant="secondary" type="reset">
               Clear
             </Button>
           </Field>

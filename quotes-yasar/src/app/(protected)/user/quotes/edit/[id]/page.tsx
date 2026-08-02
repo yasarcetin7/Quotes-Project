@@ -53,6 +53,7 @@ export default async function EditQuotePage({
         quoteId={quoteId} 
         defaultQuote={quote.quote} 
         defaultAuthor={quote.author} 
+        defaultCategory={quote.category || []}
       />
     </main>
   );
