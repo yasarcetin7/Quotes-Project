@@ -29,7 +29,7 @@ export function QuotesContextProvider({ children }: { children: React.ReactNode 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // 🚀 FİLTRELEME STATE'İ
+  
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   // TÜM VERİ ÇEKME İŞLEMİ

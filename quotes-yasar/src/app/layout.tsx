@@ -18,7 +18,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning className={cn("h-full antialiased", "font-sans", geist.variable)}>
-      {/* 🚀 DEĞİŞİKLİK BURADA: bg-base-300 ve text-base-content eklendi! */}
+      
       <body suppressHydrationWarning className="min-h-full bg-base-300 text-base-content transition-colors duration-300">
         <Providers>
           <QuotesContextProvider>
