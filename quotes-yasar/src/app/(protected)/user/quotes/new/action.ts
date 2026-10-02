@@ -17,7 +17,7 @@ export async function addNewQuote(
       message: "Please log in to add a quote.",
     };
   }
-  
+
   const rawCategoryString = String(formData.get("category") ?? "");
 
   const rawData = {
@@ -27,13 +27,13 @@ export async function addNewQuote(
     category: rawCategoryString
       .split(",")
       .map((cat) => cat.trim())
-      .filter(Boolean), 
+      .filter(Boolean),
   };
 
   const validationOutput = newQuoteSchema.safeParse(rawData);
 
   if (!validationOutput.success) {
-    const validationErrors = validationOutput.error.flatten(); 
+    const validationErrors = validationOutput.error.flatten();
     console.log("validationErrors", validationErrors);
 
     return {
@@ -42,7 +42,7 @@ export async function addNewQuote(
       data: {
         author: rawData.author,
         quote: rawData.quote,
-        category: rawCategoryString, 
+        category: rawCategoryString,
       },
     };
   } else {
@@ -50,7 +50,7 @@ export async function addNewQuote(
     const col = db.collection(Collections.quotes);
     const now = new Date();
 
-    
+
     const newQuote = {
       quote: validationOutput.data.quote,
       author: validationOutput.data.author,
@@ -59,7 +59,7 @@ export async function addNewQuote(
       adminApproved: false,
       createdAt: now,
       updatedAt: now,
-      likedBy: [], 
+      likedBy: [],
     };
 
     const newDoc = await col.insertOne(newQuote);
@@ -89,7 +89,7 @@ export async function deleteQuoteAction(quoteId: string) {
   if (quote.createdBy !== session.user.sub) {
     throw new Error("Unauthorized: You can only delete your own quotes.");
   }
-  
+
   await col.deleteOne({ _id: new ObjectId(quoteId) });
 
   return { success: true };

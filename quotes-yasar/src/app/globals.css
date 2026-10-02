@@ -9,6 +9,8 @@
   --foreground: #0f172a; /* Slate-900 */
   --border: #000000; /* Slate-200 */
   --input: #e4e4e4;
+  --muted: #475569;
+  --danger: #dc2626;
 }
 
 /* Karanlık Tema Renkleri (html etiketinde .dark veya data-theme="dark" varsa çalışır) */
@@ -17,6 +19,8 @@
   --foreground: #f8fafc; /* Slate-50 */
   --border: #323d4c; /* Slate-700 */
   --input: #2b313a;
+  --muted: #cbd5e1;
+  --danger: #f87171;
 }
 
 /* Body etiketine bu değişkenleri bağlıyoruz */

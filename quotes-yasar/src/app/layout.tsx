@@ -1,5 +1,4 @@
 import "./globals.css";
-import { QuotesContextProvider } from "./QuotesContext";
 import { Providers } from "./providers";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -19,11 +18,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning className={cn("h-full antialiased", "font-sans", geist.variable)}>
       
-      <body suppressHydrationWarning className="min-h-full bg-base-300 text-base-content transition-colors duration-300">
+      <body suppressHydrationWarning className="min-h-full bg-background text-foreground transition-colors duration-300">
         <Providers>
-          <QuotesContextProvider>
-            {children}
-          </QuotesContextProvider>
+          {children}
         </Providers>
       </body>
     </html>

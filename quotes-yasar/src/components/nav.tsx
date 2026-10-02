@@ -8,7 +8,7 @@ const navVariants = cva(
   {
     variants: {
       variant: {
-        primary: "absolute top-0 left-0 shadow-sm bg-[var(--input)] border-b border-[var(--border)] text-[var(--foreground)] transition-colors duration-300",
+        primary: "absolute top-0 left-0 shadow-sm bg-input border-b border-border text-foreground transition-colors duration-300",
       },
     },
     defaultVariants: {
