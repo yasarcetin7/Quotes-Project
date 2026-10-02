@@ -18,36 +18,48 @@ export async function addNewQuote(
     };
   }
 
+  const rawCategoryString = String(formData.get("category") ?? "");
+
   const rawData = {
     author: String(formData.get("author") ?? ""),
     quote: String(formData.get("quote") ?? ""),
-    category: String(formData.get("category") ?? ""),
+    // Zod doğrulaması için diziye (array) çeviriyoruz
+    category: rawCategoryString
+      .split(",")
+      .map((cat) => cat.trim())
+      .filter(Boolean),
   };
 
   const validationOutput = newQuoteSchema.safeParse(rawData);
 
   if (!validationOutput.success) {
-    const validationErrors = validationOutput.error.flatten(); // z.flattenError yerine doğrudan objeden flatten() çağırabilirsin
+    const validationErrors = validationOutput.error.flatten();
     console.log("validationErrors", validationErrors);
 
     return {
       success: false,
       errors: validationErrors,
-      data: rawData,
+      data: {
+        author: rawData.author,
+        quote: rawData.quote,
+        category: rawCategoryString,
+      },
     };
   } else {
     const db = await getDb();
     const col = db.collection(Collections.quotes);
     const now = new Date();
 
+
     const newQuote = {
       quote: validationOutput.data.quote,
       author: validationOutput.data.author,
-      category: validationOutput.data.category,
+      category: rawCategoryString,
       createdBy: session.user.sub,
       adminApproved: false,
       createdAt: now,
       updatedAt: now,
+      likedBy: [],
     };
 
     const newDoc = await col.insertOne(newQuote);
@@ -77,6 +89,7 @@ export async function deleteQuoteAction(quoteId: string) {
   if (quote.createdBy !== session.user.sub) {
     throw new Error("Unauthorized: You can only delete your own quotes.");
   }
+
   await col.deleteOne({ _id: new ObjectId(quoteId) });
 
   return { success: true };
