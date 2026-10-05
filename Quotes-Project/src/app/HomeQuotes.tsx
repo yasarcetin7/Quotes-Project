@@ -5,7 +5,6 @@ import { Button } from "@/components/Button";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { deleteQuoteAction } from "@/app/(protected)/user/quotes/new/action";
 import { toggleLikeQuote } from "@/app/(protected)/user/quotes/liked/action";
 import { useRouter } from "next/navigation";
 import { Nav } from "@/components/nav";
@@ -126,20 +125,6 @@ export default function HomeQuotes({
     );
   };
 
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this quote?",
-    );
-    if (!confirmDelete || !_id) return;
-
-    try {
-      await deleteQuoteAction(_id);
-      window.location.reload();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Could not delete the quote.");
-    }
-  };
-
   return (
     <Main variant="primary">
       <Nav variant="primary">
@@ -224,7 +209,10 @@ export default function HomeQuotes({
                 Edit
               </Button>
               <div className="mt-1 flex flex-col">
-                <Button variant={"primary"} onClick={handleDelete}>
+                <Button
+                  variant={"primary"}
+                  onClick={() => router.push(`/user/quotes/delete?id=${_id}`)}
+                >
                   Delete
                 </Button>
               </div>
