@@ -80,7 +80,7 @@ export function QuoteForm({
     defaultValues: {
       author: defaultAuthor,
       quote: defaultQuote,
-      category: categoryValue ? [categoryValue] : [],
+      category: categoryValue,
     },
   });
 
@@ -109,11 +109,11 @@ export function QuoteForm({
             <Controller
               name="category"
               control={control}
-              defaultValue={categoryValue ? [categoryValue] : []}
+              defaultValue={categoryValue}
               render={({ field }) => (
                 <Select
-                  onValueChange={(val) => field.onChange([val])}
-                  defaultValue={field.value?.[0] || categoryValue}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value || categoryValue}
                   name={field.name}
                 >
                   <SelectTrigger

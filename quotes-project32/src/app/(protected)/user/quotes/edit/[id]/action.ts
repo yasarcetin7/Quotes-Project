@@ -1,7 +1,6 @@
 "use server";
 
 import { auth0 } from "@/lib/auth0";
-import { redirect } from "next/navigation";
 import { ObjectId } from "mongodb";
 import { getDb, Collections } from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -24,10 +23,7 @@ export async function updateQuote(
   const rawData = {
     author: String(formData.get("author") ?? ""),
     quote: String(formData.get("quote") ?? ""),
-    category: rawCategoryString
-      .split(",")
-      .map((category) => category.trim().toLowerCase())
-      .filter(Boolean),
+    category: rawCategoryString.trim().toLowerCase(),
   };
 
   const validationOutput = newQuoteSchema.safeParse(rawData);
@@ -45,18 +41,26 @@ export async function updateQuote(
   }
 
   const db = await getDb();
-  await db.collection(Collections.quotes).updateOne(
+  const result = await db.collection(Collections.quotes).updateOne(
     { _id: new ObjectId(quoteId), createdBy: currentSession.user.sub },
     {
       $set: {
         quote: validationOutput.data.quote,
         author: validationOutput.data.author,
         category: validationOutput.data.category,
+        adminApproved: false,
         updatedAt: new Date(),
       },
     },
   );
 
+  if (result.matchedCount === 0) {
+    return {
+      success: false,
+      message: "This quote could not be updated.",
+    };
+  }
+
   revalidatePath("/");
-  redirect("/");
+  return { success: true };
 }

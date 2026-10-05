@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { auth0 } from "@/lib/auth0";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@/components/Button";
 import { QuoteForm } from "@/components/QuoteForm";
 import { updateQuote } from "./action";
 import { Nav } from "@/components/nav";
@@ -94,13 +95,11 @@ export default async function EditQuotePage({
                 : []
           }
           submitLabel="Save Changes"
+          successHref="/user/quotes/edit/success"
           secondary={
-            <Link
-              href="/"
-              className="mt-1 flex items-center justify-center rounded-md bg-slate-300/90 py-2 text-sm font-semibold text-slate-700 transition-colors hover:opacity-70"
-            >
-              Cancel
-            </Link>
+            <Button variant="primary" asChild>
+              <Link href="/">Cancel</Link>
+            </Button>
           }
         />
       </div>

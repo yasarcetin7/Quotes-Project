@@ -3,8 +3,6 @@
 import { auth0 } from "@/lib/auth0";
 import { Collections, getDb } from "@/lib/db";
 import { newQuoteSchema, AddNewQuoteState } from "@/types/quotes";
-import { ObjectId } from "mongodb";
-
 export async function addNewQuote(
   _currentState: AddNewQuoteState,
   formData: FormData,
@@ -23,11 +21,7 @@ export async function addNewQuote(
   const rawData = {
     author: String(formData.get("author") ?? ""),
     quote: String(formData.get("quote") ?? ""),
-    // Zod doğrulaması için diziye (array) çeviriyoruz
-    category: rawCategoryString
-      .split(",")
-      .map((cat) => cat.trim())
-      .filter(Boolean),
+    category: rawCategoryString.trim(),
   };
 
   const validationOutput = newQuoteSchema.safeParse(rawData);
@@ -54,7 +48,7 @@ export async function addNewQuote(
     const newQuote = {
       quote: validationOutput.data.quote,
       author: validationOutput.data.author,
-      category: rawCategoryString,
+      category: validationOutput.data.category,
       createdBy: session.user.sub,
       adminApproved: false,
       createdAt: now,
@@ -69,28 +63,4 @@ export async function addNewQuote(
       success: true,
     };
   }
-}
-
-export async function deleteQuoteAction(quoteId: string) {
-  const session = await auth0.getSession();
-
-  if (!session?.user) {
-    throw new Error("You must be logged in to delete a quote.");
-  }
-
-  const db = await getDb();
-  const col = db.collection(Collections.quotes);
-
-  const quote = await col.findOne({ _id: new ObjectId(quoteId) });
-  if (!quote) {
-    throw new Error("Quote not found.");
-  }
-
-  if (quote.createdBy !== session.user.sub) {
-    throw new Error("Unauthorized: You can only delete your own quotes.");
-  }
-
-  await col.deleteOne({ _id: new ObjectId(quoteId) });
-
-  return { success: true };
 }

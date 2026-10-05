@@ -26,9 +26,6 @@ export default function NewQuoteSuccessPage() {
               <a href="/auth/logout" className={navLinkClass}>
                 Log out
               </a>
-              <Link href="/" className={navLinkClass}>
-                Homepage
-              </Link>
             </>
           )}
         </div>
@@ -46,6 +43,9 @@ export default function NewQuoteSuccessPage() {
         
           <Button variant="primary" asChild>
             <Link href="/user/quotes/new">Add another quote</Link>
+          </Button>
+          <Button variant="primary" asChild>
+            <Link href="/">Go to homepage</Link>
           </Button>
         </div>
       </section> 
