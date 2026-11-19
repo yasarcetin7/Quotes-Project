@@ -102,7 +102,12 @@ export default function HomeQuotes({
   };
 
   const handleLikeQuote = async () => {
-    if (!_id || !user?.sub) return;
+    if (!_id || userLoading) return;
+
+    if (!user?.sub) {
+      window.location.assign("/auth/login");
+      return;
+    }
 
     const result = await toggleLikeQuote(_id);
     if (!result || "error" in result || result.likeCount === undefined) return;

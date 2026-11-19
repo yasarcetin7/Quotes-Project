@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// Formun genel durumunu (state) tutan tip
 export type AddNewQuoteState = {
   success: boolean;
   errors?: {
@@ -20,13 +19,12 @@ export type AddNewQuoteState = {
   };
 };
 
-// Zod Doğrulama Kuralları
 export const newQuoteSchema = z.object({
   author: z
     .string()
     .trim()
     .min(2, { message: 'Author name should be at least 2 characters long' })
-    .max(30, { message: 'Author name should be 50 characters long maximum. Please try a shorter name.'})
+    .max(30, { message: 'Author name should be 50 characters long maximum. Please try a shorter name.' })
     .regex(/^[^0-9]*$/, { message: 'Author name cannot contain numbers' }),
   quote: z
     .string()
@@ -34,10 +32,11 @@ export const newQuoteSchema = z.object({
     .min(6, { message: 'Quote should be at least 6 characters long' })
     .max(300, {
       message:
-        'Quote should be 300 characters long maximum. Please try a shorter one.',}),
+        'Quote should be 300 characters long maximum. Please try a shorter one.',
+    }),
 
 
-category: z.string().min(1, "Please select a category"),
+  category: z.string().min(1, "Please select a category"),
 });
 
 export type NewQuoteInput = z.infer<typeof newQuoteSchema>;
@@ -48,7 +47,7 @@ export interface Quote {
   author: string;
   category: string[];
   likeCount: number;
-  likedBy: string[]; 
+  likedBy: string[];
   isLiked?: boolean;
   createdBy: string;
   adminApproved: boolean;
