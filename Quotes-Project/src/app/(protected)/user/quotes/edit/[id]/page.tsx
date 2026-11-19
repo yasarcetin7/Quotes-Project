@@ -49,10 +49,11 @@ export default async function EditQuotePage({
   if (!session?.user) redirect("/auth/login");
 
   const user = session.user;
-  const db = await getDb();
-  const quote = await db
-    .collection(Collections.quotes)
-    .findOne({ _id: new ObjectId(quoteId) });
+  const quote = ObjectId.isValid(quoteId)
+    ? await (await getDb())
+        .collection(Collections.quotes)
+        .findOne({ _id: new ObjectId(quoteId) })
+    : null;
 
   if (!quote) {
     return (
@@ -72,7 +73,7 @@ export default async function EditQuotePage({
             Unauthorized: You can only edit your own quotes.
           </p>
           <Link href="/" className={navLinkClass}>
-            Go Back Home
+            Go Back HomePage
           </Link>
         </div>
       </Main>
