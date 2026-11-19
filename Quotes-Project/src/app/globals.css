@@ -1,29 +1,27 @@
-/* 🚀 DÜZELTİLEN KISIM: @import yerine v3 standart komutları */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Varsayılan (Açık) Tema Renkleri */
+
 :root {
-  --background: #ffffff; /* Slate-100 veya Slate-200 gibi açık bir renk */
-  --foreground: #0f172a; /* Slate-900 */
-  --border: #000000; /* Slate-200 */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --border: #000000;
   --input: #e4e4e4;
   --muted: #475569;
   --danger: #dc2626;
 }
 
-/* Karanlık Tema Renkleri (html etiketinde .dark veya data-theme="dark" varsa çalışır) */
-.dark, [data-theme="dark"] {
-  --background: #1e1e1e; /* Slate-950 */
-  --foreground: #f8fafc; /* Slate-50 */
-  --border: #323d4c; /* Slate-700 */
+.dark,
+[data-theme="dark"] {
+  --background: #1e1e1e;
+  --foreground: #f8fafc;
+  --border: #323d4c;
   --input: #2b313a;
   --muted: #cbd5e1;
   --danger: #f87171;
 }
 
-/* Body etiketine bu değişkenleri bağlıyoruz */
 @layer base {
   body {
     background-color: var(--background);
