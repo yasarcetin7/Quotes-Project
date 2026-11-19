@@ -76,7 +76,7 @@ function Field({
 }: {
   className?: string;
   orientation?: "vertical" | "horizontal" | "responsive";
-  [key: string]: any; 
+  [key: string]: any;
 }) {
   return (
     <div

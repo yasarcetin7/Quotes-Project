@@ -24,7 +24,7 @@ export const newQuoteSchema = z.object({
     .string()
     .trim()
     .min(2, { message: 'Author name should be at least 2 characters long' })
-    .max(30, { message: 'Author name should be 50 characters long maximum. Please try a shorter name.' })
+    .max(50, { message: 'Author name should be 50 characters long maximum. Please try a shorter name.' })
     .regex(/^[^0-9]*$/, { message: 'Author name cannot contain numbers' }),
   quote: z
     .string()
